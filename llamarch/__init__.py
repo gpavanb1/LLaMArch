@@ -5,8 +5,8 @@ from .auth.authenticator import Auth0Authenticator
 API_KEY = os.getenv("LLAMARCH_API_KEY")
 
 # Initialize Auth0 details
-AUTH0_DOMAIN = "your-tenant.auth0.com"  # Replace with your Auth0 domain
-AUTH0_AUDIENCE = "your-api-audience"  # Replace with your API audience
+AUTH0_DOMAIN = "llamarch.us.auth0.com"  # Replace with your Auth0 domain
+AUTH0_AUDIENCE = "token_validation"  # Replace with your API audience
 
 # Initialize the Auth0Authenticator
 authenticator = Auth0Authenticator(
