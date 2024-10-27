@@ -2,9 +2,9 @@ import os
 import pytest
 from langchain.llms import OpenAI
 # Assuming the class is in knowledge_graph.py
-from knowledge_graph import KnowledgeGraph
+from patterns.knowledge_graph.knowledge_graph import KnowledgeGraph
 # Assuming the class is in knowledge_llm.py
-from knowledge_llm import KnowledgeLLM
+from patterns.knowledge_graph.knowledge_llm import KnowledgeLLM
 
 
 @pytest.fixture(scope="module")

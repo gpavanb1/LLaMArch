@@ -1,6 +1,6 @@
 import pytest
 # Assuming the class is in knowledge_graph.py
-from knowledge_graph import KnowledgeGraph
+from patterns.knowledge_graph.knowledge_graph import KnowledgeGraph
 
 
 @pytest.fixture(scope="module")
