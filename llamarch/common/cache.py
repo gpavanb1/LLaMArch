@@ -1,0 +1,18 @@
+import redis  # or any other cache library you prefer
+
+
+class Cache:
+    def __init__(self, host="localhost", port=6379, db=0):
+        self.client = redis.Redis(host=host, port=port, db=db)
+
+    def set(self, key, value, expiration=None):
+        self.client.set(key, value, ex=expiration)
+
+    def get(self, key):
+        return self.client.get(key)
+
+    def delete(self, key):
+        self.client.delete(key)
+
+    def exists(self, key):
+        return self.client.exists(key) == 1
