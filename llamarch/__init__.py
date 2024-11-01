@@ -18,8 +18,5 @@ if API_KEY is None:
     raise ValueError(
         "API key not found. Please set the LLAMARCH_API_KEY environment variable.")
 
-try:
-    payload = authenticator.verify_api_key(API_KEY, APPLICATION_NAME)
-    print("API key is valid.")
-except ValueError as e:
-    raise ImportError(f"Invalid API key: {e}")
+payload = authenticator.verify_api_key(API_KEY, APPLICATION_NAME)
+print("API key is valid.")
