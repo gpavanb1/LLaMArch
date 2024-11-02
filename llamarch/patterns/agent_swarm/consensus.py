@@ -1,30 +1,28 @@
 from typing import List, Dict, Any
-from agent_base import AgentResponse
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from sentence_transformers import SentenceTransformer
+from .base_agent import AgentResponse, GenerativeAIAgent
 import logging
 
 
 class ConsensusLayer:
     def __init__(self):
-        self.encoder = SentenceTransformer('all-MiniLM-L6-v2')
         self.logger = logging.getLogger("ConsensusLayer")
 
-    def calculate_similarity_matrix(self, responses: List[str]) -> np.ndarray:
-        """Calculate similarity matrix for all responses"""
-        embeddings = self.encoder.encode(responses)
+    def calculate_similarity_matrix(self, embeddings: List[List[float]]) -> np.ndarray:
+        """Calculate similarity matrix from precomputed embeddings."""
         return cosine_similarity(embeddings)
 
-    def get_consensus(self, responses: List[AgentResponse]) -> Dict[str, Any]:
-        """Generate consensus from multiple agent responses"""
+    def get_consensus(self, responses: List[AgentResponse], agent_list: List[GenerativeAIAgent]) -> Dict[str, Any]:
+        """Generate consensus from multiple agent responses."""
         try:
-            # Extract response texts
+            # Extract response texts and compute embeddings using each agent's LLM instance
             response_texts = [r.response for r in responses]
+            embeddings = [agent_list[r.agent_id].embedding.get_embeddings(
+                r.response) for r in responses]
 
-            # Calculate similarity matrix
-            similarity_matrix = self.calculate_similarity_matrix(
-                response_texts)
+            # Calculate similarity matrix based on embeddings
+            similarity_matrix = self.calculate_similarity_matrix(embeddings)
 
             # Calculate agreement scores
             agreement_scores = np.mean(similarity_matrix, axis=1)
@@ -55,7 +53,7 @@ class OutputAggregator:
         self.logger = logging.getLogger("OutputAggregator")
 
     def aggregate_output(self, consensus_result: Dict[str, Any]) -> Dict[str, Any]:
-        """Aggregate and format the final output"""
+        """Aggregate and format the final output."""
         try:
             return {
                 "final_response": consensus_result["consensus_response"],

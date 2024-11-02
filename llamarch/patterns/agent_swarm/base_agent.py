@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Optional
+from llamarch.common.llm import LLM
+from llamarch.common.llm_embedding import LLMEmbedding
 import numpy as np
 from dataclasses import dataclass
 import logging
@@ -14,17 +15,45 @@ class AgentResponse:
     metadata: Dict[str, Any]
 
 
-class GenerativeAIAgent(ABC):
-    def __init__(self, agent_id: str, model_name: str):
+class GenerativeAIAgent:
+    def __init__(self, agent_id: str, llm: LLM, embedding: LLMEmbedding):
+        """
+        Initialize a generative AI agent.
+
+        Args:
+            agent_id (str): Unique identifier for the agent.
+            llm (LLM): An instance of the LLM class, initialized with the desired model.
+            embedding (LLMEmbedding): An instance of the LLMEmbedding class, initialized with the desired embedding model.
+        """
         self.agent_id = agent_id
-        self.model_name = model_name
+        self.llm = llm
+        self.embedding = embedding
         self.performance_history: List[float] = []
         self.logger = logging.getLogger(f"Agent-{agent_id}")
 
-    @abstractmethod
-    async def generate_response(self, query: str) -> AgentResponse:
-        """Generate a response for the given query"""
-        pass
+    async def generate_response(self, query: str, max_tokens: int = 100, temperature: float = 0.7) -> AgentResponse:
+        """
+        Generate a response for the given query using the language model.
+
+        Args:
+            query (str): The input query to respond to.
+            max_tokens (int): Maximum tokens for the response.
+            temperature (float): The temperature parameter for controlling randomness.
+
+        Returns:
+            AgentResponse: An object containing the response and metadata.
+        """
+        response_text = self.llm.generate(
+            query, max_tokens=max_tokens, temperature=temperature)
+        confidence = 1.0  # Placeholder; this could be dynamically calculated if desired
+        metadata = {
+            "model_name": self.llm.model_name,
+            "parameters": {
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+            }
+        }
+        return AgentResponse(agent_id=self.agent_id, response=response_text, confidence=confidence, metadata=metadata)
 
     def update_performance(self, score: float):
         """Update agent's performance history"""

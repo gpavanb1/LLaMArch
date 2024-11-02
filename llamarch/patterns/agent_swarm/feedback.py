@@ -1,5 +1,5 @@
 from typing import Dict, Any, List
-from agent_base import GenerativeAIAgent
+from .base_agent import GenerativeAIAgent
 import numpy as np
 import logging
 from datetime import datetime
@@ -46,17 +46,25 @@ class FeedbackMechanism:
             # Calculate base score from feedback
             base_score = feedback.get("score", 0.0)
 
-            # Get agreement scores from consensus data
+            # Get agreement matrix from consensus data
             agreement_matrix = np.array(consensus_data["agreement_matrix"])
 
+            # Map agent IDs to their index in the contributing agents list
+            agent_id_to_idx = {
+                agent_id: idx
+                for idx, agent_id in enumerate(consensus_data["contributing_agents"])
+            }
+
             # Update each agent's performance
-            for idx, agent in enumerate(agents):
-                if agent.agent_id in consensus_data["contributing_agents"]:
-                    # Adjust score based on agreement with consensus
+            for agent in agents:
+                if agent.agent_id in agent_id_to_idx:
+                    idx = agent_id_to_idx[agent.agent_id]
+
+                    # Calculate agreement-based adjustment
                     agent_agreement = np.mean(agreement_matrix[idx])
                     adjusted_score = base_score * agent_agreement
 
-                    # Update agent's performance history
+                    # Update the agent's performance history
                     agent.update_performance(adjusted_score)
 
                     self.logger.info(
