@@ -31,7 +31,7 @@ class GenerativeAIAgent:
         self.performance_history: List[float] = []
         self.logger = logging.getLogger(f"Agent-{agent_id}")
 
-    async def generate_response(self, query: str, max_tokens: int = 100, temperature: float = 0.7) -> AgentResponse:
+    async def generate_response(self, query: str) -> AgentResponse:
         """
         Generate a response for the given query using the language model.
 
@@ -43,15 +43,10 @@ class GenerativeAIAgent:
         Returns:
             AgentResponse: An object containing the response and metadata.
         """
-        response_text = self.llm.generate(
-            query, max_tokens=max_tokens, temperature=temperature)
+        response_text = self.llm.generate(query)
         confidence = 1.0  # Placeholder; this could be dynamically calculated if desired
         metadata = {
-            "model_name": self.llm.model_name,
-            "parameters": {
-                "max_tokens": max_tokens,
-                "temperature": temperature,
-            }
+            "model_name": self.llm.model_name
         }
         return AgentResponse(agent_id=self.agent_id, response=response_text, confidence=confidence, metadata=metadata)
 
