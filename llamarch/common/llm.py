@@ -2,13 +2,15 @@ from typing import Optional, Dict, Any, List
 
 
 class LLM:
-    def __init__(self,
-                 model_category: str,
-                 model_name: str,
-                 api_key: Optional[str] = None,
-                 model_parameters: Optional[Dict[str, Any]] = None):
+    def __init__(
+        self,
+        model_category: str,
+        model_name: str,
+        api_key: Optional[str] = None,
+        model_parameters: Optional[Dict[str, Any]] = None
+    ):
         """
-        Initialize the LLM client and (optionally) a separate embedding model based on specified names.
+        Initialize the LLM client with default token length configurations.
 
         Args:
             model_category (str): The name of the language model provider (e.g., 'openai', 'huggingface', 'cohere').
@@ -19,10 +21,55 @@ class LLM:
         self.model_category = model_category.lower()
         self.model_name = model_name.lower() if model_name else None
         self.api_key = api_key
-        self.model_parameters = model_parameters or {}
 
-        # Initialize the language model and embedding model
+        # Default parameters
+        default_params = {
+            "max_length": 600,
+            "temperature": 0.7
+        }
+
+        # Merge default parameters with provided parameters
+        base_parameters = {**default_params, **(model_parameters or {})}
+
+        # Map the parameters based on the model category
+        self.model_parameters = self._map_config_parameters(base_parameters)
+
+        # Initialize the language model
         self.llm = self._initialize_llm()
+
+    def _map_config_parameters(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Map configuration parameters to provider-specific format.
+
+        Args:
+            params (Dict[str, Any]): Input parameters to map
+
+        Returns:
+            Dict[str, Any]: Mapped parameters for specific provider
+        """
+        mapped_params = params.copy()
+
+        if self.model_category == "openai":
+            # OpenAI uses max_tokens instead of max_new_tokens
+            if "max_new_tokens" in mapped_params:
+                mapped_params["max_tokens"] = mapped_params.pop(
+                    "max_new_tokens")
+            # OpenAI doesn't use max_length
+            mapped_params.pop("max_length", None)
+
+        elif self.model_category == "huggingface":
+            # Set truncation to True
+            mapped_params["truncation"] = True
+
+        elif self.model_category == "cohere":
+            # Cohere uses max_tokens instead of max_new_tokens
+            if "max_new_tokens" in mapped_params:
+                mapped_params["max_tokens"] = mapped_params.pop(
+                    "max_new_tokens")
+            # Cohere doesn't use max_length
+            mapped_params.pop("max_length", None)
+
+        return mapped_params
 
     def _initialize_llm(self):
         """Initialize the language model based on the specified category."""
@@ -33,13 +80,15 @@ class LLM:
                 model_name=self.model_name or "gpt-3.5-turbo",
                 **self.model_parameters
             )
+
         elif self.model_category == "huggingface":
             from langchain_huggingface import HuggingFacePipeline
             return HuggingFacePipeline.from_model_id(
                 model_id=self.model_name,
                 task="text-generation",
-                **self.model_parameters
+                pipeline_kwargs=self.model_parameters
             )
+
         elif self.model_category == "cohere":
             from langchain_community.llms import Cohere
             return Cohere(
@@ -51,7 +100,7 @@ class LLM:
             raise ValueError(
                 f"Unsupported model category: {self.model_category}")
 
-    def generate(self, prompt: str, max_tokens: int = 100, temperature: float = 0.7) -> str:
+    def generate(self, prompt: str) -> str:
         """
         Generate a response from the language model.
 
@@ -63,11 +112,5 @@ class LLM:
         Returns:
             str: Generated text from the LLM.
         """
-        response = self.llm.invoke(
-            prompt,
-            config={
-                "max_tokens": max_tokens,
-                "temperature": temperature
-            }
-        )
+        response = self.llm.invoke(prompt)
         return response.content if hasattr(response, 'content') else response
