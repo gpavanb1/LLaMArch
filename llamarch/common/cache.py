@@ -22,4 +22,4 @@ class Cache:
         Retrieve all values stored in the cache.
         """
         keys = self.client.keys('*')  # Get all keys
-        return [self.client.get(key) for key in keys if self.client.exists(key)]
+        return [str(self.client.get(key)) for key in keys if self.client.exists(key)]
