@@ -16,3 +16,10 @@ class Cache:
 
     def exists(self, key):
         return self.client.exists(key) == 1
+
+    def get_all_values(self):
+        """
+        Retrieve all values stored in the cache.
+        """
+        keys = self.client.keys('*')  # Get all keys
+        return [self.client.get(key) for key in keys if self.client.exists(key)]
