@@ -1,10 +1,10 @@
-from langchain.vectorstores import Pinecone, Weaviate, Qdrant, Chroma
-from langchain.embeddings import OpenAIEmbeddings, CohereEmbeddings, HuggingFaceEmbeddings
+from langchain_community.vectorstores import Pinecone, Weaviate, Chroma
+from langchain_qdrant import QdrantVectorStore
 from typing import List, Union
 
 
 class VectorDB:
-    def __init__(self, db_type="pinecone", api_key=None, environment=None, index_name="default_index"):
+    def __init__(self, db_type="pinecone", api_key=None, environment=None, index_name="default_index", embedding_model=None):
         """
         Initialize the vector database client based on the specified type.
 
@@ -13,11 +13,13 @@ class VectorDB:
             api_key (str): API key for the vector database (if required).
             environment (str): Environment or URL for the vector database (if required).
             index_name (str): Name of the index or collection in the vector database.
+            embeddings: Required for Qdrant, the embedding model used
         """
         self.db_type = db_type.lower()
         self.api_key = api_key
         self.environment = environment
         self.index_name = index_name
+        self.embedding_model = embedding_model
         self.client = self._initialize_client()
 
     def _initialize_client(self):
@@ -35,7 +37,7 @@ class VectorDB:
         elif self.db_type == "qdrant":
             from qdrant_client import QdrantClient
             client = QdrantClient(api_key=self.api_key, url=self.environment)
-            return Qdrant(client=client, index_name=self.index_name)
+            return QdrantVectorStore(client=client, collection_name=self.index_name, embedding=self.embedding_model)
 
         elif self.db_type == "chroma":
             return Chroma(collection_name=self.index_name)
@@ -52,8 +54,11 @@ class VectorDB:
             embedding (List[float]): The embedding vector.
             metadata (dict): Additional metadata to store with the vector.
         """
-        self.client.add_texts([embedding], metadatas=[
-                              metadata], ids=[vector_id])
+        self.client.add_texts(
+            texts=[str(embedding)],
+            metadatas=[metadata],
+            ids=[vector_id]
+        )
 
     def query_similar(self, embedding: List[float], top_k: int = 5) -> List[Union[dict, str]]:
         """
@@ -66,5 +71,5 @@ class VectorDB:
         Returns:
             List[Union[dict, str]]: List of results from the vector database.
         """
-        results = self.client.similarity_search(embedding, k=top_k)
+        results = self.client.similarity_search_by_vector(embedding, k=top_k)
         return results
