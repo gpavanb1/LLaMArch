@@ -1,5 +1,5 @@
 from typing import Dict, Any, List
-from .base_agent import GenerativeAIAgent
+from llamarch.common.base_agent import GenerativeAIAgent
 import numpy as np
 import logging
 from datetime import datetime

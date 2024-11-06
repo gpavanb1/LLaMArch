@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from .base_agent import AgentResponse, GenerativeAIAgent
+from llamarch.common.base_agent import AgentResponse, GenerativeAIAgent
 import logging
 
 

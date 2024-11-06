@@ -2,7 +2,7 @@ import os
 from llamarch.common.llm import LLM
 from llamarch.common.llm_embedding import LLMEmbedding
 
-from llamarch.patterns.agent_swarm.base_agent import GenerativeAIAgent
+from llamarch.common.base_agent import GenerativeAIAgent
 from llamarch.patterns.agent_swarm import AgentSwarm
 
 llm = LLM(model_category="huggingface",
