@@ -1,18 +1,17 @@
-# main.py
-from evaluation_system import EvaluationSystem
+from llamarch.common.llm import LLM
+from llamarch.patterns.student_teacher import StudentTeacher
 
-# Specify the names or paths of the pre-trained models
-student_model_name = "path/to/fine-tuned-student-llm"
-teacher_model_name = "path/to/fine-tuned-teacher-llm"
+llm = LLM(model_category="huggingface",
+          model_name="distilbert/distilgpt2")
 
-# Initialize the evaluation system
-evaluation_system = EvaluationSystem(student_model_name, teacher_model_name)
+student_teacher = StudentTeacher(llm, llm)
 
-# Define a query for testing
-query = "Explain the importance of data privacy in the digital age."
+query = "What are the implications of AI on the job market?"
 
-# Run evaluation
-student_response, evaluation_feedback = evaluation_system.evaluate_query(query)
-
-# Use the feedback to further fine-tune or adjust the Student LLM if needed
-evaluation_system.fine_tune_student(evaluation_feedback)
+student_response, teacher_response = student_teacher.generate_response(query)
+print(f"Student response: {student_response}")
+print(f"Teacher response: {teacher_response}")
+student_teacher.train_student([teacher_response])
+print("Fine tuning completed!")
+fine_tuned_response = student_teacher.student.generate_response(query)
+print(f"Fine tuned response: {fine_tuned_response}")
