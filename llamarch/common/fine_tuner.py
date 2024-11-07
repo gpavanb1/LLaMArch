@@ -56,7 +56,6 @@ class FineTuner:
         tokenizer.pad_token = tokenizer.eos_token
 
         # Tokenize data
-        print(texts)
         encodings = tokenizer(
             texts,
             truncation=True,

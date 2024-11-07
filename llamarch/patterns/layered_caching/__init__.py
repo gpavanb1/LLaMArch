@@ -1,6 +1,6 @@
 from llamarch.common.llm import LLM
 from llamarch.common.cache import Cache
-from .fine_tuner import FineTuner
+from llamarch.common.fine_tuner import FineTuner
 
 
 class LayeredCaching:
@@ -23,10 +23,8 @@ class LayeredCaching:
         self.cache.set(query, result)
 
         # Step 3: Fine-tune the smaller model based on cached results
-        print(self.specialized_llm)
         if not self.specialized_llm:
             data = self.cache.get_all_values()  # Use all cached results
-            print(data)
             self.specialized_llm = self.fine_tuner.fine_tune(data)
             print('Fine-tuned model loaded')
         return result
