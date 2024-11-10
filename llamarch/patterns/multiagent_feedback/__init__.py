@@ -31,8 +31,8 @@ class MultiAgentModel:
         unified_output = self.integrator.integrate_outputs(responses)
 
         # # Step 4: Collect feedback and adjust rules as needed
-        # feedback = f"Feedback for query '{query}': output quality needs improvement."
-        # self.feedback_mechanism.collect_feedback(feedback)
-        # self.feedback_mechanism.adjust_rules()
+        feedback = f"Feedback for query '{query}': output quality needs improvement."
+        self.feedback_mechanism.collect_feedback(feedback)
+        self.feedback_mechanism.adjust_rules()
 
         return unified_output
