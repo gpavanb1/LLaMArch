@@ -10,11 +10,16 @@ class LLMEmbedding:
         """
         Initialize the LLM embedding client and (optionally) a separate embedding model based on specified names.
 
-        Args:
-            model_category (str): The name of the language model provider (e.g., 'openai', 'huggingface', 'cohere').
-            embedding_model_name (str): The name of the embedding model.
-            api_key (str): Optional, The API key for the selected provider.
-            model_parameters (dict): Additional parameters for model configuration.
+        Parameters
+        ----------
+        model_category : str
+            The name of the language model provider (e.g., 'openai', 'huggingface', 'cohere').
+        embedding_model_name : str
+            The name of the embedding model.
+        api_key : str, optional
+            The API key for the selected provider. Default is None.
+        model_parameters : dict, optional
+            Additional parameters for model configuration. Default is an empty dictionary if not provided.
         """
         self.model_category = model_category.lower()
         self.embedding_model_name = embedding_model_name.lower(
@@ -26,9 +31,21 @@ class LLMEmbedding:
         self.embedding_model = self._initialize_embeddings()
 
     def _initialize_embeddings(self):
-        """Initialize the embedding model based on the specified category."""
+        """
+        Initialize the embedding model based on the specified category.
+
+        Returns
+        -------
+        object
+            The initialized embedding model corresponding to the selected provider.
+
+        Raises
+        ------
+        ValueError
+            If an unsupported model category is provided.
+        """
         if self.model_category == "openai":
-            from langchain_openai import OpenAIEmbeddings  # New import in 0.3
+            from langchain_openai import OpenAIEmbeddings
             return OpenAIEmbeddings(
                 openai_api_key=self.api_key,
                 model=self.embedding_model_name or "text-embedding-ada-002"
@@ -53,10 +70,14 @@ class LLMEmbedding:
         """
         Get embeddings for a given text using the specified embedding model.
 
-        Args:
-            text (str): The input text for which embeddings are needed.
+        Parameters
+        ----------
+        text : str
+            The input text for which embeddings are needed.
 
-        Returns:
-            List[float]: Embedding vector for the input text.
+        Returns
+        -------
+        List[float]
+            The embedding vector for the input text.
         """
         return self.embedding_model.embed_query(text)
