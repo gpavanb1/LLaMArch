@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any
 from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
 
 
@@ -14,12 +14,18 @@ class LLM:
         """
         Initialize the LLM client with default token length configurations.
 
-        Args:
-            model_category (str): The name of the language model provider (e.g., 'openai', 'huggingface', 'cohere').
-            model_name (str): The name of the model
-            api_key (str): Optional, The API key for the selected provider.
-            model_parameters (dict): Optional, Additional parameters for model configuration.
-            local_model_path (str): Optional, Path to a fine-tuned model directory.
+        Parameters
+        ----------
+        model_category : str
+            The name of the language model provider (e.g., 'openai', 'huggingface', 'cohere').
+        model_name : str
+            The name of the model.
+        api_key : str, optional
+            The API key for the selected provider.
+        model_parameters : dict, optional
+            Additional parameters for model configuration.
+        local_model_path : str, optional
+            Path to a fine-tuned model directory.
         """
         self.model_category = model_category.lower()
         self.model_name = model_name.lower() if model_name else None
@@ -45,11 +51,15 @@ class LLM:
         """
         Map configuration parameters to provider-specific format.
 
-        Args:
-            params (Dict[str, Any]): Input parameters to map
+        Parameters
+        ----------
+        params : dict
+            Input parameters to map.
 
-        Returns:
-            Dict[str, Any]: Mapped parameters for specific provider
+        Returns
+        -------
+        dict
+            Mapped parameters for specific provider.
         """
         mapped_params = params.copy()
 
@@ -76,7 +86,19 @@ class LLM:
         return mapped_params
 
     def _initialize_llm(self):
-        """Initialize the language model based on the specified category."""
+        """
+        Initialize the language model based on the specified category.
+
+        Returns
+        -------
+        object
+            An instance of the selected language model.
+
+        Raises
+        ------
+        ValueError
+            If the specified model category is unsupported.
+        """
         if self.model_category == "openai":
             from langchain_openai import ChatOpenAI
             return ChatOpenAI(
@@ -118,13 +140,15 @@ class LLM:
         """
         Generate a response from the language model.
 
-        Args:
-            prompt (str): The input prompt for the LLM.
-            max_tokens (int): Maximum number of tokens for the response.
-            temperature (float): The temperature parameter for controlling randomness.
+        Parameters
+        ----------
+        prompt : str
+            The input prompt for the LLM.
 
-        Returns:
-            str: Generated text from the LLM.
+        Returns
+        -------
+        str
+            Generated text from the LLM.
         """
         response = self.model.invoke(prompt)
         return response.content if hasattr(response, 'content') else response
