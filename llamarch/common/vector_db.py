@@ -8,12 +8,18 @@ class VectorDB:
         """
         Initialize the vector database client based on the specified type.
 
-        Args:
-            db_type (str): Type of vector database (e.g., 'pinecone', 'weaviate', 'qdrant', 'chroma').
-            api_key (str): API key for the vector database (if required).
-            environment (str): Environment or URL for the vector database (if required).
-            index_name (str): Name of the index or collection in the vector database.
-            embeddings: Required for Qdrant, the embedding model used
+        Parameters
+        ----------
+        db_type : str, optional
+            Type of vector database (e.g., 'pinecone', 'weaviate', 'qdrant', 'chroma'). Default is 'pinecone'.
+        api_key : str, optional
+            API key for the vector database (if required).
+        environment : str, optional
+            Environment or URL for the vector database (if required).
+        index_name : str, optional
+            Name of the index or collection in the vector database. Default is 'default_index'.
+        embedding_model : optional
+            Required for Qdrant, the embedding model used.
         """
         self.db_type = db_type.lower()
         self.api_key = api_key
@@ -23,7 +29,19 @@ class VectorDB:
         self.client = self._initialize_client()
 
     def _initialize_client(self):
-        # Initialize based on database type
+        """
+        Initialize the client for the specified vector database type.
+
+        Returns
+        -------
+        object
+            The initialized client for the selected vector database.
+
+        Raises
+        ------
+        ValueError
+            If an unsupported db_type is provided.
+        """
         if self.db_type == "pinecone":
             import pinecone
             pinecone.init(api_key=self.api_key, environment=self.environment)
@@ -49,10 +67,14 @@ class VectorDB:
         """
         Add an embedding to the vector database.
 
-        Args:
-            vector_id (str): Unique identifier for the vector.
-            embedding (List[float]): The embedding vector.
-            metadata (dict): Additional metadata to store with the vector.
+        Parameters
+        ----------
+        vector_id : str
+            Unique identifier for the vector.
+        embedding : List[float]
+            The embedding vector to add to the database.
+        metadata : dict, optional
+            Additional metadata to store with the vector. Default is None.
         """
         self.client.add_texts(
             texts=[str(embedding)],
@@ -64,12 +86,17 @@ class VectorDB:
         """
         Query for similar embeddings in the vector database.
 
-        Args:
-            embedding (List[float]): The embedding vector to search.
-            top_k (int): Number of similar vectors to retrieve.
+        Parameters
+        ----------
+        embedding : List[float]
+            The embedding vector to search for similar vectors.
+        top_k : int, optional
+            Number of similar vectors to retrieve. Default is 5.
 
-        Returns:
-            List[Union[dict, str]]: List of results from the vector database.
+        Returns
+        -------
+        List[Union[dict, str]]
+            List of results from the vector database, typically containing metadata and vector information.
         """
         results = self.client.similarity_search_by_vector(embedding, k=top_k)
         return results
