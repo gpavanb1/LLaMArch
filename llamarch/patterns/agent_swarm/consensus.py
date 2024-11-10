@@ -7,14 +7,53 @@ import logging
 
 class ConsensusLayer:
     def __init__(self):
+        """
+        Initialize the ConsensusLayer with logging capabilities.
+
+        Attributes
+        ----------
+        logger : logging.Logger
+            Logger instance for logging errors and events during consensus generation.
+        """
         self.logger = logging.getLogger("ConsensusLayer")
 
     def calculate_similarity_matrix(self, embeddings: List[List[float]]) -> np.ndarray:
-        """Calculate similarity matrix from precomputed embeddings."""
+        """
+        Calculate the similarity matrix from a list of precomputed embeddings using cosine similarity.
+
+        Parameters
+        ----------
+        embeddings : List[List[float]]
+            A list of embeddings where each embedding is a list of floats representing a vector.
+
+        Returns
+        -------
+        np.ndarray
+            The similarity matrix computed using cosine similarity between the embeddings.
+        """
         return cosine_similarity(embeddings)
 
     def get_consensus(self, responses: List[AgentResponse], agent_list: List[GenerativeAIAgent]) -> Dict[str, Any]:
-        """Generate consensus from multiple agent responses."""
+        """
+        Generate consensus from multiple agent responses based on their similarity and confidence scores.
+
+        Parameters
+        ----------
+        responses : List[AgentResponse]
+            A list of AgentResponse objects, where each response contains the agent's output and confidence.
+        agent_list : List[GenerativeAIAgent]
+            A list of GenerativeAIAgent objects, where each agent provides the embeddings for its response.
+
+        Returns
+        -------
+        Dict[str, Any]
+            A dictionary containing the consensus response, confidence score, agreement matrix, and contributing agents.
+
+        Raises
+        ------
+        Exception
+            If an error occurs during consensus generation, it is logged and re-raised.
+        """
         try:
             # Extract response texts and compute embeddings using each agent's LLM instance
             response_texts = [r.response for r in responses]
@@ -50,10 +89,36 @@ class ConsensusLayer:
 
 class OutputAggregator:
     def __init__(self):
+        """
+        Initialize the OutputAggregator with logging capabilities.
+
+        Attributes
+        ----------
+        logger : logging.Logger
+            Logger instance for logging errors and events during output aggregation.
+        """
         self.logger = logging.getLogger("OutputAggregator")
 
     def aggregate_output(self, consensus_result: Dict[str, Any]) -> Dict[str, Any]:
-        """Aggregate and format the final output."""
+        """
+        Aggregate and format the final output based on the consensus result.
+
+        Parameters
+        ----------
+        consensus_result : Dict[str, Any]
+            A dictionary containing the consensus response, confidence score, agreement matrix, and contributing agents.
+
+        Returns
+        -------
+        Dict[str, Any]
+            A dictionary containing the final response along with metadata including confidence, contributing agents,
+            and agreement statistics.
+
+        Raises
+        ------
+        Exception
+            If an error occurs during output aggregation, it is logged and re-raised.
+        """
         try:
             return {
                 "final_response": consensus_result["consensus_response"],
