@@ -8,8 +8,10 @@ class Summarizer:
         """
         Initialize the Summarizer with an LLM instance.
 
-        Args:
-            llm (LLM): An instance of the LLM class for generating summaries.
+        Parameters
+        ----------
+        llm : LLM
+            An instance of the LLM class used for generating summaries.
         """
         self.llm = llm
 
@@ -17,18 +19,20 @@ class Summarizer:
         """
         Summarize a list of items.
 
-        Args:
-            items (List[Union[dict, str]]): List of items to summarize.
+        Parameters
+        ----------
+        items : List[Union[dict, str]]
+            List of items to summarize. Each item can be a string or a dictionary with a "query" key in metadata.
 
-        Returns:
-            str: The generated summary.
+        Returns
+        -------
+        str
+            The generated summary.
         """
-        # Extract text content from items and concatenate it for summarization
         text = " ".join([item if isinstance(item, str)
                          else getattr(item, "metadata", "").get("query") for item in items])
         text = text[:MAX_LENGTH]
 
-        # Use the LLM instance to generate the summary
         prompt = f"Please summarize the following text:\n{text}\nSummary:"
         summary = self.llm.generate(prompt)
 

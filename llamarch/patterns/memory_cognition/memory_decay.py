@@ -1,27 +1,40 @@
-# memory_decay.py
-
 from typing import Any
 
 
 class MemoryDecay:
     def __init__(self, importance_threshold=0.5):
         """
-        Initialize memory decay/evaluation component with an importance threshold.
+        Initialize the MemoryDecay component with an importance threshold for information retention.
 
-        Args:
-            importance_threshold (float): Threshold for deciding if information is important enough to retain.
+        Parameters
+        ----------
+        importance_threshold : float, optional
+            A threshold between 0 and 1 for deciding if information is important enough to retain, 
+            by default 0.5.
         """
         self.importance_threshold = importance_threshold
 
     def evaluate(self, summary: str) -> bool:
         """
-        Evaluate if a summary is important enough to store in Long-Term Memory.
+        Evaluate if a given summary is important enough to store in Long-Term Memory.
 
-        Args:
-            summary (str): The summarized text to evaluate.
+        Parameters
+        ----------
+        summary : str
+            The summarized text to evaluate based on predefined importance criteria.
 
-        Returns:
-            bool: True if the information should be stored in Long-Term Memory, False otherwise.
+        Returns
+        -------
+        bool
+            True if the summary meets the importance threshold and should be stored in Long-Term Memory, 
+            False otherwise.
+
+        Notes
+        -----
+        The evaluation is performed by checking for specific keywords (e.g., "important", "critical") 
+        in the summary text. The importance score is calculated as the fraction of keywords found in the 
+        summary, and if it meets or exceeds the importance threshold, the summary is deemed significant enough 
+        to retain.
         """
         # Example heuristic: Check if certain keywords are in the summary
         important_keywords = ["important", "critical", "relevant", "necessary"]
