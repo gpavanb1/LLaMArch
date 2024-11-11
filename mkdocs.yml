@@ -1,43 +1,47 @@
-site_name: llamarch
+site_name: LLaMArch
 theme:
   name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - python
 nav:
   - Home: index.md
   - Getting Started: start.md
   - Pricing: pricing.md
   - Code Documentation:
-      - Overview: api.md
+      - Overview: overview.md
       - Common Components:
-        - LLM: api/common/llm.md
-        - LLM Embedding: api/common/llm_embedding.md
-        - Fine Tuner: api/common/fine_tuner.md
-        - Cache: api/common/cache.md
-        - Vector DB: api/common/vector_db.md
-        - Graph DB: api/common/graph_db.md
-        - Base Agent: api/common/base_agent.md
+        - LLM: common/llm.md
+        - LLM Embedding: common/llm_embedding.md
+        - FineTuner: common/fine_tuner.md
+        - Cache: common/cache.md
+        - VectorDB: common/vector_db.md
+        - GraphDB: common/graph_db.md
+        - Base Agent: common/base_agent.md
       - Patterns:
-        - Multi-Agent Feedback: api/patterns/multiagent_feedback.md
-        - Multi-Task Fine-Tuning: api/patterns/multitask_finetune.md
-        - Knowledge Graph: api/patterns/knowledge_graph.md
-        - Layered Caching: api/patterns/layered_caching.md
-        - Memory Cognition: api/patterns/memory_cognitive.md
-        - Student-Teacher: api/patterns/student_teacher.md
+        - Agent Swarm: patterns/agent_swarm.md
+        - Knowledge Graph: patterns/knowledge_graph.md
+        - Layered Caching: patterns/layered_caching.md
+        - Memory Cognition: patterns/memory_cognition.md
+        - Multi-Agent Feedback: patterns/multiagent_feedback.md
+        - Student-Teacher: patterns/student_teacher.md
       - Tutorials:
         - Memory Chatbot: tutorials/memory_chatbot.md
-      - Internals:
-        - Overview: internals.md
 
 plugins:
+  - bootstrap4-blockquotes
+  - bootstrap4-tables
   - mkdocstrings:
       handlers:
         python:
           options:
             docstring_style: numpy
             members_order: source
+  
 
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 
 
-extra_css:
+extra_css: 
   - assets/docs.css
