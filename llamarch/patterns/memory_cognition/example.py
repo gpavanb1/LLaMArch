@@ -7,6 +7,7 @@ from .memory_decay import MemoryDecay  # Memory evaluation and decay component
 from llamarch.common.vector_db import VectorDB
 from llamarch.common.llm import LLM
 from llamarch.common.llm_embedding import LLMEmbedding  # Embedding class
+from llamarch.patterns.memory_cognition import MemoryCognition
 
 # Initialize the embedding model
 embedding = LLMEmbedding(
@@ -36,24 +37,29 @@ memory_decay = MemoryDecay()  # Memory evaluation and decay component
 query = "Example query text"
 query_vector = embedding.get_embeddings(query)
 
+# Create a MemoryCognition object
+memory_cognitive = MemoryCognition(
+    llm=llm,
+    embedding=embedding,
+    short_term_memory=short_term_memory,
+    long_term_memory=long_term_memory,
+    summarizer=summarizer,
+    memory_decay=memory_decay
+)
+
 # Step 1: Store query in Short-Term Memory
-short_term_memory.store_information(query_vector, query)
+memory_cognitive.store_information(query, query_vector)
 
 # Step 2: Retrieve similar items from Short-Term Memory
-similar_items_stm = short_term_memory.fetch_similar(query_vector)
-print("Similar items in STM:", [
-      getattr(x, "metadata", {}).get("query") for x in similar_items_stm])
+similar_items_stm = memory_cognitive.fetch_similar(query_vector)
 
 # Step 3: Summarize similar items from STM
-summary = summarizer.summarize(similar_items_stm)
-print("Summary of similar items:", summary)
+summary = memory_cognitive.summarize(similar_items_stm)
 
 # Step 4: Evaluate if the summarized information should be stored in Long-Term Memory
-if memory_decay.evaluate(summary):
+if memory_cognitive.evaluate(summary):
     # Step 5: If evaluation passes, flush summarized information to Long-Term Memory
-    short_term_memory.flush_to_long_term(long_term_memory)
-    print("Summary flushed to Long-Term Memory.")
+    memory_cognitive.flush_to_long_term(long_term_memory)
 
 # Step 6: Fetch similar items from Long-Term Memory for future queries
-long_term_results = long_term_memory.fetch_similar(query_vector)
-print("Similar items in LTM:", long_term_results)
+long_term_results = memory_cognitive.fetch_similar_from_long_term(query_vector)
