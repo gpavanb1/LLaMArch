@@ -28,22 +28,54 @@ class CustomDataset:
 
 
 class FineTuner:
+    """
+    Fine-tuner class for fine-tuning a Hugging Face language model (LLM) with custom data.
+
+    Attributes
+    ----------
+    llm : LLM
+        An instance of the LLM class, representing the language model to be fine-tuned.
+
+    Methods
+    -------
+    fine_tune(texts, output_dir="./fine_tuned_model")
+        Fine-tunes the LLM's model with the provided list of texts.
+    """
+
     def __init__(self, llm: LLM):
         """
-        Initialize the FineTuner with an LLM instance.
+        Initializes the FineTuner with an LLM instance.
 
-        Args:
-            llm (LLM): An instance of the LLM class.
+        Parameters
+        ----------
+        llm : LLM
+            An instance of the LLM class to be fine-tuned.
         """
         self.llm = llm
 
     def fine_tune(self, texts: List[str], output_dir: str = "./fine_tuned_model"):
         """
-        Fine-tune the LLM's model with the provided list of texts.
+        Fine-tunes the LLM model with the provided list of texts.
 
-        Args:
-            texts (List[str]): A list of strings for training.
-            output_dir (str): The directory to save the fine-tuned model.
+        This method tokenizes the input texts, prepares them into a dataset, and trains the model using
+        the Hugging Face Trainer API. The fine-tuned model is saved to the specified output directory.
+
+        Parameters
+        ----------
+        texts : List[str]
+            A list of strings to be used for training the model.
+        output_dir : str, optional
+            The directory where the fine-tuned model will be saved (default is "./fine_tuned_model").
+
+        Returns
+        -------
+        LLM
+            The LLM instance updated to use the fine-tuned model.
+
+        Raises
+        ------
+        ValueError
+            If the model category of the LLM is not "huggingface".
         """
         if self.llm.model_category != "huggingface":
             raise ValueError(
