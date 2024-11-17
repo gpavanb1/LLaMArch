@@ -30,8 +30,6 @@ nav:
         - Memory Cognition: patterns/memory_cognition.md
         - Multi-Agent Feedback: patterns/multiagent_feedback.md
         - Student-Teacher: patterns/student_teacher.md
-      - Tutorials:
-        - Memory Chatbot: tutorials/memory_chatbot.md
 
 plugins:
   - mkdocstrings:
