@@ -1,4 +1,8 @@
 site_name: LLaMArch
+site_url: https://gpavanb1.github.io/llamarch-docs/
+deploy:
+  remote_branch: gh-pages
+  remote_name: public-origin
 theme:
   name: readthedocs
   highlightjs: true
@@ -27,10 +31,6 @@ nav:
         - Student-Teacher: patterns/student_teacher.md
       - Tutorials:
         - Memory Chatbot: tutorials/memory_chatbot.md
-
-deploy:
-  remote_branch: gh-pages
-  remote_name: public-origin
 
 plugins:
   - mkdocstrings:
