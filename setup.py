@@ -7,7 +7,7 @@ setup(
     name="LLaMArch",
     version="0.0.1",
     description="Building Block Architectures for GenAI",
-    url="https://github.com/gpavanb1/LLaMArch",
+    url="https://github.com/gpavanb1/llamarch-docs",
     author="gpavanb1",
     author_email="gpavanb@gmail.com",
     license="CC BY-NC 4.0 for non-commercial use, commercial license available",
@@ -24,8 +24,8 @@ setup(
     ],
     keywords="genai architecture ai patterns machine-learning llm langchain",
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/gpavanb1/LLaMArch/issues",
-        "Source": "https://github.com/gpavanb1/LLaMArch/",
+        "Bug Reports": "https://github.com/gpavanb1/llamarch-docs/issues",
+        "Source": "https://github.com/gpavanb1/llamarch-docs/",
     },
-    zip_safe=False),
+    zip_safe=False
 )
