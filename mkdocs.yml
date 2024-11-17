@@ -28,6 +28,10 @@ nav:
       - Tutorials:
         - Memory Chatbot: tutorials/memory_chatbot.md
 
+deploy:
+  remote_branch: gh-pages
+  remote_name: public-origin
+
 plugins:
   - mkdocstrings:
       handlers:
