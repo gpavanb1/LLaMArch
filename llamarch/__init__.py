@@ -15,8 +15,7 @@ authenticator = CustomAuthenticator(auth_server_url=AUTH_SERVER_URL)
 
 # Check API key validity on package import
 if API_KEY is None:
-    raise ValueError(
-        "API key not found. Please set the LLAMARCH_API_KEY environment variable.")
-
-payload = authenticator.verify_api_key(API_KEY, APPLICATION_NAME)
-print("API key is valid.")
+    print('No API key specified. You are agreeing to use the `llamarch` package for academic and personal use only.')
+else:
+    payload = authenticator.verify_api_key(API_KEY, APPLICATION_NAME)
+    print("API key is valid.")
