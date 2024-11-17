@@ -93,3 +93,58 @@ class GraphDB:
             The result of the query execution.
         """
         return tx.run(query, parameters)
+
+    def write_key_value(self, key: str, value: str):
+        """
+        Execute a write query on the Neo4j database.
+
+        Parameters
+        ----------
+        key : str
+            The key to be used to store the value
+        query : str
+            The value to be stored
+
+        Returns
+        -------
+        None
+        """
+        with self.driver.session() as session:
+            query = """
+            MERGE (n:Data {key: $key})
+            SET n.value = $value
+            RETURN n
+            """
+            result = session.run(query, key=key, value=value)
+
+            # Print the result (the created or updated node)
+            for record in result:
+                print(f"Upserted Node: {record['n']}")
+
+    def read_by_value(self, value: str) -> list:
+        """
+        Execute a read on the Neo4j database to find nodes based on the value.
+
+        Parameters
+        ----------
+        value : str
+            The value to search for in the database
+
+        Returns
+        -------
+        str
+            The key associated with the value if found, else None
+        """
+        with self.driver.session() as session:
+            query = """
+            MATCH (n:Data {value: $value})
+            RETURN n.key AS key
+            """
+            result = session.run(query, value=value)
+
+            # Return the key if the node is found, otherwise None
+            for record in result:
+                return record["key"]
+
+        # If no key is found for the value, return None
+        return None
