@@ -12,6 +12,7 @@ nav:
   - Home: index.md
   - Getting Started: start.md
   - Pricing: pricing.md
+  - License: license.md
   - Code Documentation:
       - Overview: overview.md
       - Common Components:

@@ -18,10 +18,6 @@ LLaMArch stands out due to its modular and extensible design, which is not fully
 - **Support**: Provides simple interfaces for various LLM vendors and vector databases, allowing for seamless integration.
 - **Extensibility**: Allows for easy addition of new components and patterns, enabling the creation of complex architectures.
 
-## GitHub Repository
-
-The link to the repository can be found [here](http://github.com/gpavanb1/LLaMArch)
-
 ## Whom to contact?
 
 Please direct your queries to [gpavanb1](http://github.com/gpavanb1)
