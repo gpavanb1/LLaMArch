@@ -63,13 +63,13 @@ vector_db.add_embeddings(
     info_id, embedding.get_embeddings(query), metadata={"query": query})
 
 # Store in GraphDB
-graph_db.write_data(info_id, query)
+graph_db.write_key_value(info_id, query)
 
 # Query the VectorDB
 vector_db_response = vector_db.query_similar(embedding.get_embeddings(query))
 print(f"VectorDB response: {vector_db_response}")
 
 # Query the GraphDB
-graph_db_response = graph_db.read_data(query)
+graph_db_response = graph_db.read_by_value(query)
 print(f"GraphDB response: {graph_db_response}")
 ```
