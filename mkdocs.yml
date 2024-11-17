@@ -29,8 +29,6 @@ nav:
         - Memory Chatbot: tutorials/memory_chatbot.md
 
 plugins:
-  - bootstrap4-blockquotes
-  - bootstrap4-tables
   - mkdocstrings:
       handlers:
         python:
