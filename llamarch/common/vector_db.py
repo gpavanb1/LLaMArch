@@ -1,17 +1,15 @@
-from langchain_community.vectorstores import Pinecone, Weaviate, Chroma
-from langchain_qdrant import QdrantVectorStore
 from typing import List, Union
 
 
 class VectorDB:
-    def __init__(self, db_type="pinecone", api_key=None, environment=None, index_name="default_index", embedding_model=None):
+    def __init__(self, db_type="qdrant", api_key=None, environment=None, index_name="default_index", embedding_model=None):
         """
-        Initialize the vector database client based on the specified type.
+        Initialize the vector database client. Currently defaulting only to Qdrant.
 
         Parameters
         ----------
         db_type : str, optional
-            Type of vector database (e.g., 'pinecone', 'weaviate', 'qdrant', 'chroma'). Default is 'pinecone'.
+            Type of vector database. Default is 'qdrant'.
         api_key : str, optional
             API key for the vector database (if required).
         environment : str, optional
@@ -42,23 +40,11 @@ class VectorDB:
         ValueError
             If an unsupported db_type is provided.
         """
-        if self.db_type == "pinecone":
-            import pinecone
-            pinecone.init(api_key=self.api_key, environment=self.environment)
-            return Pinecone(index_name=self.index_name)
-
-        elif self.db_type == "weaviate":
-            import weaviate
-            client = weaviate.Client(url=self.environment)
-            return Weaviate(client=client, index_name=self.index_name)
-
-        elif self.db_type == "qdrant":
+        if self.db_type == "qdrant":
             from qdrant_client import QdrantClient
+            from langchain_qdrant import QdrantVectorStore
             client = QdrantClient(api_key=self.api_key, url=self.environment)
             return QdrantVectorStore(client=client, collection_name=self.index_name, embedding=self.embedding_model)
-
-        elif self.db_type == "chroma":
-            return Chroma(collection_name=self.index_name)
 
         else:
             raise ValueError(f"Unsupported db_type: {self.db_type}")
