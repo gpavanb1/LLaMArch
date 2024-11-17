@@ -102,7 +102,7 @@ class GraphDB:
         ----------
         key : str
             The key to be used to store the value
-        query : str
+        value : str
             The value to be stored
 
         Returns
