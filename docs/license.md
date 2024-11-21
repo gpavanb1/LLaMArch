@@ -18,7 +18,8 @@ Full license details can be found at: [https://creativecommons.org/licenses/by-n
 
 For commercial use, you must obtain a separate commercial license. This includes any usage in a business context or in products or services offered for sale.
 
-To obtain a commercial license, please contact the [author](mailto:gpavanb@gmail.com).
+To obtain a commercial license, please submit a request [here](https://docs.google.com/forms/d/e/1FAIpQLScsh9lAv9pYtg_xyvXinCcfaW6Y-KnUWRgcYLpU1_vXSk_EUg/viewform?usp=pp_url&entry.1547099900=LLaMArch)
+
 
 ## Disclaimer of Warranty
 
