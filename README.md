@@ -23,3 +23,10 @@ Please direct your queries to [gpavanb1](http://github.com/gpavanb1)
 for any questions.
 
 You can raise any issues faced while using the project at this [link](https://github.com/gpavanb1/llamarch-docs/issues)
+
+## How to create documentation?
+
+The documentation is generated using [mkdocs](https://www.mkdocs.org/). Local version can be viewed using `mkdocs serve` and the deployment is done using
+```
+mkdocs gh-deploy --remote-name public-origin
+```
