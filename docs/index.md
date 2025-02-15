@@ -23,6 +23,8 @@ LLaMArch stands out due to its modular and extensible design, which is not fully
 Please direct your queries to [gpavanb1](http://github.com/gpavanb1)
 for any questions.
 
+You can raise any issues faced while using the project at this [link](https://github.com/gpavanb1/llamarch-docs/issues)
+
 ## Acknowledgements
 
 Special thanks to discussions and the [article](https://towardsdatascience.com/generative-ai-design-patterns-a-comprehensive-guide-41425a40d7d0) by [Vincent Koc](https://medium.com/@vincentkoc) for inspiring this project.

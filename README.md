@@ -21,3 +21,5 @@ Refer to the [documentation site](https://gpavanb1.github.io/llamarch-docs/) for
 
 Please direct your queries to [gpavanb1](http://github.com/gpavanb1)
 for any questions.
+
+You can raise any issues faced while using the project at this [link](https://github.com/gpavanb1/llamarch-docs/issues)
