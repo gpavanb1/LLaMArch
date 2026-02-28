@@ -1,8 +1,5 @@
 site_name: LLaMArch
 site_url: https://gpavanb1.github.io/llamarch-docs/
-deploy:
-  remote_branch: gh-pages
-  remote_name: public-origin
 theme:
   name: readthedocs
   highlightjs: true
