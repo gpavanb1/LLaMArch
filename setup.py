@@ -5,12 +5,12 @@ with open("README.md", "r") as fh:
 
 setup(
     name="LLaMArch",
-    version="0.0.1",
+    version="0.1.0",
     description="Building Block Architectures for GenAI",
     url="https://github.com/gpavanb1/llamarch-docs",
     author="gpavanb1",
     author_email="gpavanb@gmail.com",
-    license="CC BY-NC 4.0 for non-commercial use, commercial license available",
+    license="MIT",
     packages=find_packages(),
     include_package_data=True,
     install_requires=["langchain"],
@@ -18,7 +18,7 @@ setup(
     long_description_content_type="text/markdown",
     classifiers=[
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
-        "License :: Other/Proprietary License",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
     ],
