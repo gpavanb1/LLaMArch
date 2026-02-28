@@ -6,6 +6,9 @@ venv
 .vscode
 .coverage
 
+# Fine-tuned model
+fine_tuned_model
+
 # Ignore build
 build
 dist
