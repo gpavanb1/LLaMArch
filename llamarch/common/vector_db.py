@@ -86,3 +86,15 @@ class VectorDB:
         """
         results = self.client.similarity_search_by_vector(embedding, k=top_k)
         return results
+
+    def clear(self):
+        """
+        Clear all data from the current collection in the vector database.
+
+        Returns
+        -------
+        None
+        """
+        if self.db_type == "qdrant":
+            self.client.client.delete_collection(
+                collection_name=self.index_name)

@@ -103,3 +103,13 @@ class Cache:
         """
         keys = self.client.keys('*')  # Get all keys
         return [self.client.get(key).decode('utf-8') for key in keys if self.client.exists(key)]
+
+    def flush(self):
+        """
+        Clear all data from the Redis database.
+
+        Returns
+        -------
+        None
+        """
+        self.client.flushdb()

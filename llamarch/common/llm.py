@@ -126,7 +126,7 @@ class LLM:
                 )
 
         elif self.model_category == "cohere":
-            from langchain_community.llms import Cohere
+            from langchain_cohere import Cohere
             return Cohere(
                 cohere_api_key=self.api_key,
                 model=self.model_name,

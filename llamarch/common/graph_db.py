@@ -50,7 +50,7 @@ class GraphDB:
         None
         """
         with self.driver.session() as session:
-            session.write_transaction(self._execute_query, query, parameters)
+            session.execute_write(self._execute_query, query, parameters)
 
     def read_data(self, query: str, parameters: dict = None) -> list:
         """
@@ -68,10 +68,12 @@ class GraphDB:
         list
             A list of records returned by the query.
         """
+        def work(tx):
+            result = self._execute_query(tx, query, parameters)
+            return [record.data() for record in result]
+
         with self.driver.session() as session:
-            result = session.read_transaction(
-                self._execute_query, query, parameters)
-            return list(result)
+            return session.execute_read(work)
 
     @staticmethod
     def _execute_query(tx, query: str, parameters: dict = None):
