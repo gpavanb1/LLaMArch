@@ -4,7 +4,7 @@ Thank you for your interest in contributing to LLaMArch! We welcome contribution
 
 ## License
 
-LLaMArch is dual-licensed. Please refer to the [license](LICENSE.md) for further details.
+LLaMArch is licensed under the [MIT License](LICENSE.md).
 
 By contributing, you agree that your contributions will be licensed under these terms.
 

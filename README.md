@@ -15,6 +15,32 @@ pip install llamarch
 from llamarch import ...
 ```
 
+## Testing
+
+To run the tests, first install the test dependencies:
+
+```bash
+pip install pytest
+```
+
+The tests require several services (Neo4j, Redis, Qdrant) to be running. You can use the provided `docker-compose.yml` to start these services:
+
+```bash
+docker compose up -d
+```
+
+Then run the tests using:
+
+```bash
+pytest
+```
+
+Alternatively, you can use the provided test script which starts the services, runs the tests, and then shuts down the services:
+
+```bash
+./scripts/run_tests.sh
+```
+
 Refer to the [documentation site](https://gpavanb1.github.io/llamarch-docs/) for more information.
 
 ## Whom to contact?
