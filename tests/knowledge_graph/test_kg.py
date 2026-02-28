@@ -1,6 +1,6 @@
 import pytest
-# Assuming the class is in knowledge_graph.py
-from patterns.knowledge_graph.knowledge_graph import KnowledgeGraph
+# Assuming the class is in graph_db.py
+from llamarch.common.graph_db import GraphDB as KnowledgeGraph
 
 
 @pytest.fixture(scope="module")
@@ -10,8 +10,15 @@ def kg():
     user = "neo4j"
     password = "password"  # Replace with your Neo4j password
     kg_instance = KnowledgeGraph(uri, user, password)
+    
+    # Clean up before tests
+    kg_instance.write_data("MATCH (n:Person) DETACH DELETE n")
+    
     yield kg_instance
-    kg_instance.close()  # Ensure the connection is closed after tests
+    
+    # Clean up after tests
+    kg_instance.write_data("MATCH (n:Person) DETACH DELETE n")
+    kg_instance.close()
 
 
 def test_write_data(kg):
@@ -20,13 +27,13 @@ def test_write_data(kg):
     kg.write_data(query, parameters)
 
     # Verify the data was written
-    query_check = "MATCH (n:Person {name: $name}) RETURN n"
+    query_check = "MATCH (n:Person {name: $name}) RETURN n.name AS name"
     result = kg.read_data(query_check, parameters)
     assert len(result) > 0  # Ensure that the node was created
 
 
 def test_read_data(kg):
-    query = "MATCH (n:Person {name: $name}) RETURN n"
+    query = "MATCH (n:Person {name: $name}) RETURN n.name AS name"
     parameters = {"name": "Alice"}
     result = kg.read_data(query, parameters)
 

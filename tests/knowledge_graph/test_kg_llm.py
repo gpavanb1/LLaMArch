@@ -1,10 +1,10 @@
 import os
 import pytest
-from langchain.llms import OpenAI
-# Assuming the class is in knowledge_graph.py
-from patterns.knowledge_graph.knowledge_graph import KnowledgeGraph
-# Assuming the class is in knowledge_llm.py
-from patterns.knowledge_graph.knowledge_llm import KnowledgeLLM
+from langchain_community.llms import OpenAI
+# Assuming the class is in graph_db.py
+from llamarch.common.graph_db import GraphDB as KnowledgeGraph
+# Assuming the class is in __init__.py of knowledge_graph pattern
+from llamarch.patterns.knowledge_graph import KnowledgeLLM
 
 
 @pytest.fixture(scope="module")
@@ -23,6 +23,8 @@ def llm():
     # Set up the LLM instance with the OpenAI API key
     # Make sure to set this environment variable
     api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        pytest.skip("OPENAI_API_KEY not set")
     llm_instance = OpenAI(api_key=api_key)
     yield llm_instance
 
@@ -60,9 +62,9 @@ def test_generate_ontology(knowledge_llm):
     ontology = knowledge_llm.generate_ontology(text)
 
     # Verify that the ontology was generated and stored in the knowledge graph
-    query_check = "MATCH (n:Ontology {data: $data}) RETURN n"
+    query_check = "MATCH (n:Ontology {data: $data}) RETURN n.data AS data"
     parameters = {"data": ontology}
-    result = knowledge_llm.query_knowledge_graph(query_check)
+    result = knowledge_llm.query_knowledge_graph(query_check, parameters)
 
     assert len(result) > 0  # Ensure the ontology was created
     assert result[0]["data"] == ontology  # Check the stored ontology data
@@ -77,8 +79,8 @@ def test_update_knowledge_graph(knowledge_llm):
     knowledge_llm.update_knowledge_graph(query, parameters)
 
     # Verify the data was written
-    query_check = "MATCH (n:Person {name: $name}) RETURN n"
-    result = knowledge_llm.query_knowledge_graph(query_check)
+    query_check = "MATCH (n:Person {name: $name}) RETURN n.name AS name"
+    result = knowledge_llm.query_knowledge_graph(query_check, parameters)
 
     assert len(result) > 0  # Ensure that the node was created
     assert result[0]["name"] == "Alice"  # Check the returned data
