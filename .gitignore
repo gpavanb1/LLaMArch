@@ -9,6 +9,9 @@ venv
 # Fine-tuned model
 fine_tuned_model
 
+# Site
+site/
+
 # Ignore build
 build
 dist
